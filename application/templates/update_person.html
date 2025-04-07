@@ -1,4 +1,4 @@
-{% extends "layout2.html" %}
+{% extends "layout.html" %}
 
 {% block body_content %}
 <section>
@@ -9,9 +9,9 @@
 
         <label for="flowerid">New Favourite Flower:</label>
         <select id="flowerid" name="new_flowerid" required>
-            {% for colour in colours %}
-                <option value="{{ flowers[0] }}" {% if flowers[0] == person['FlowerID'] %}selected{% endif %}>
-                    {{ colour[1] }}
+            {% for flower in flowers %}
+                <option value="{{ flower[0] }}" {% if flower[0] == person['FlowerID'] %}selected{% endif %}>
+                    {{ flower[1] }}
                 </option>
             {% endfor %}
         </select>

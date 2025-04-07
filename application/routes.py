@@ -1,6 +1,6 @@
 from application import app
 from flask import render_template, url_for, request, redirect, session
-from application.person_colourdb import get_people, update_person, get_db_connection
+from application.person_colourdb import get_people, update_person, get_all_flowers, get_db_connection
 
 
 # @app.route('/home')
@@ -64,51 +64,45 @@ def submit_form():
     if request.method == 'POST':
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
-        fav_color = request.form.get('fav_color')
+        favourite_flower = request.form.get('favourite_flower')
 
         # Print the captured values
         print(f"First Name: {first_name}")
         print(f"Last Name: {last_name}")
-        print(f"Favorite Color (Hex Code): {fav_color}")
+        print(f"Favorite Flower: {favourite_flower}")
 
         # To displays a success message or handle the data as needed
-        return f"Thank you, {first_name} {last_name}! Your favorite color is {fav_color}."
-    return render_template('favourite_colour.html')
+        return f"Thank you, {first_name} {last_name}! Your favorite color is {favourite_flower}."
+    return render_template('favourite_flower.html')
 
 @app.route('/people_colour')
 def all_people_from_db():
     people_from_db = get_people()
     print(people_from_db)
-    return render_template('people.html', people=people_from_db, title='List of Peoples Favourite Colour in Database')
+    return render_template('people.html', people=people_from_db)
 
-@app.route('/update_person/<int:person_id>', methods=['GET', 'POST'])
+
+@app.route("/update/<int:person_id>", methods=["GET", "POST"])
 def update_person_details(person_id):
-    # Get a database connection
     conn = get_db_connection()
-    cursor = conn.cursor()
+    cursor = conn.cursor(dictionary=True)
 
-    # Fetch the list of available colours from the 'colour' table
-    cursor.execute("SELECT ColourID, Name FROM colour")
-    colours = cursor.fetchall()
+    if request.method == "POST":
+        new_lastname = request.form["new_lastname"]
+        new_flowerid = request.form["new_flowerid"]
+        update_person(person_id, new_lastname, new_flowerid)
+        return redirect(url_for("all_people_from_db"))
 
-    if request.method == 'POST':
-        new_lastname = request.form['new_lastname']
-        new_flowerid = request.form['new_flowerid']
-
-        # Update the person in the database
-        update_person(person_id, new_lastname,  new_flowerid)
-
-    # Fetch the person's current information: Lastname and ColourID
-    cursor.execute("SELECT Lastname, FlowerID FROM person WHERE PersonID = %s", (person_id,))
+    # Fetch the person's current details
+    cursor.execute("SELECT * FROM person_2 WHERE PersonID = %s", (person_id,))
     person = cursor.fetchone()
 
-    # Get the current color name based on ColourID
-    cursor.execute("SELECT Name FROM flowers WHERE FlowerID = %s", (person[1],))
-    current_colour = cursor.fetchone()
+    flowers = get_all_flowers()
 
     return render_template(
-        'update_person.html',
+        "update_person.html",
+        person=person,
         person_id=person_id,
-        flowers=flowers,  # List of all colours passed to template
-        person={'Lastname': person[0], 'ColourID': person[1], 'ColourName': current_colour[0]}
+        flowers=flowers
     )
+

@@ -57,6 +57,21 @@ def get_people():
     return person_list
 
 
+def get_all_flowers():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    sql = "SELECT FlowerID, Name FROM flowers"
+    cursor.execute(sql)
+    result_set = cursor.fetchall()
+
+    flowers = []
+    for flower in result_set:
+        flowers.append((flower[0], flower[1]))  # (ID, Name)
+
+    return flowers
+
+
 def update_person(person_id, new_lastname, new_flowerid):
     # Establish connection to the database
     conn = get_db_connection()
