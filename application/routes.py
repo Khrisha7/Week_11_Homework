@@ -46,6 +46,6 @@ def contact():
         return redirect(url_for('contact'))
     return render_template('contact.html')
 
-@app.route('/hobbies')
-def hobbies():
-    return render_template('hobbies.html')
+@app.route('/funfacts')
+def funfacts():
+    return render_template('funfacts.html')
