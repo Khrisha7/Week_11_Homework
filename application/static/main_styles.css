@@ -1,0 +1,47 @@
+body {
+    background-color: #3F88C5;
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    align-items: center;
+    font-size: 18px;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+h1, h2 {
+    color: #800080;
+}
+
+section {
+    margin-top: 20px;
+}
+
+form input {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+
+img {
+    max-width: 65%;
+    align-items: center;display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, td {
+            border: 1px solid black;
+            padding: 8px;
+
+}
+
+table {
+    margin: auto;
+    border-collapse: collapse;
+    text-align: center;
+}

@@ -30,3 +30,22 @@ def login():
 
     return render_template('login.html')  # Render the login form on GET request
 
+def send_contact_message(name, email, message):
+    # For example, print the message to the console (you could also send an email or save it to a database)
+    print(f"Name: {name}\nEmail: {email}\nMessage: {message}")
+    # Additional logic for sending the message or storing it
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'POST':
+        # Process the form submission
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        send_contact_message(name, email, message)  # Function to send message
+        return redirect(url_for('contact'))
+    return render_template('contact.html')
+
+@app.route('/hobbies')
+def hobbies():
+    return render_template('hobbies.html')
